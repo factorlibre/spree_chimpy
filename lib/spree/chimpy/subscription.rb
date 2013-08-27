@@ -21,7 +21,7 @@ module Spree::Chimpy
 
       if unsubscribing?
         unsubscribe
-      elsif subscribing? || merge_vars_changed?
+      elsif subscribing?
         subscribe
       end
     end
@@ -36,11 +36,11 @@ module Spree::Chimpy
     end
 
     def subscribing?
-      merge_vars_changed? && @model.subscribed
+      @model.subscribed && (@model.subscribed_changed? || merge_vars_changed?)
     end
 
     def unsubscribing?
-      !@new_record && !@model.subscribed && @model.subscribed_changed?
+      !@model.subscribed && @model.subscribed_changed?
     end
 
     def merge_vars_changed?

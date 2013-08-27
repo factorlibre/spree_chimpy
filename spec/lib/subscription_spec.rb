@@ -43,7 +43,49 @@ describe Spree::Chimpy::Subscription do
     end
 
     describe "resubscribe" do
-      pending
+      after(:each){ subscription.resubscribe }
+      context 'subscribed' do
+        context 'unchanged' do
+          let(:model){ double(:model, :subscribed => true,
+                                      :subscribed_changed? => false,
+                                      :email_changed? => false) }
+          it 'does nothing' do
+            Spree::Chimpy.should_not_receive(:enqueue)
+          end
+        end
+        context 'changed' do
+          let(:model){ double(:model, :subscribed => true,
+                                      :subscribed_changed? => true,
+                                      :email_changed? => false) }
+          it 'subscribes' do
+            Spree::Chimpy.should_receive(:enqueue).with(:subscribe, model)
+          end
+        end
+        context 'email changed' do
+          let(:model){ double(:model, :subscribed => true,
+                                      :subscribed_changed? => false,
+                                      :email_changed? => true) }
+          it 'subscribes' do
+            Spree::Chimpy.should_receive(:enqueue).with(:subscribe, model)
+          end
+        end
+      end
+      context 'not subscribed' do
+        context 'unchanged' do
+          let(:model){ double(:model, :subscribed => false,
+                                      :subscribed_changed? => false) }
+          it 'does nothing' do
+            Spree::Chimpy.should_not_receive(:enqueue)
+          end
+        end
+        context 'changed' do
+          let(:model){ double(:model, :subscribed => false,
+                                      :subscribed_changed? => true) }
+          it 'should unsubscribe' do
+            Spree::Chimpy.should_receive(:enqueue).with(:unsubscribe, model)
+          end
+        end
+      end
     end
   end
 
