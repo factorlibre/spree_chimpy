@@ -8,22 +8,25 @@ module Spree::Chimpy
 
     def subscribe
       defer(:subscribe) if allowed?
+      true
     end
 
     def unsubscribe
       defer(:unsubscribe)
+      true
     end
 
     def resubscribe(&block)
       block.call if block
 
-      return unless configured?
-
-      if unsubscribing?
-        unsubscribe
-      elsif subscribing?
-        subscribe
+      if configured?
+        if unsubscribing?
+          unsubscribe
+        elsif subscribing?
+          subscribe
+        end
       end
+      true
     end
 
     private

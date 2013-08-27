@@ -11,7 +11,7 @@ describe Spree::Chimpy::Subscription do
     end
 
     describe "subscribe" do
-      after(:each){ subscription.subscribe }
+      after(:each){ subscription.subscribe.should be_true }
       context 'not subscribed' do
         let(:model){ double(:model, subscribed: false) }
         it 'does nothing' do
@@ -27,7 +27,7 @@ describe Spree::Chimpy::Subscription do
     end
 
     describe "unsubscribe" do
-      after(:each){ subscription.unsubscribe }
+      after(:each){ subscription.unsubscribe.should be_true }
       context 'not subscribed' do
         let(:model){ double(:model, subscribed: false) }
         it 'should enqueue' do
@@ -43,7 +43,7 @@ describe Spree::Chimpy::Subscription do
     end
 
     describe "resubscribe" do
-      after(:each){ subscription.resubscribe }
+      after(:each){ subscription.resubscribe.should be_true }
       context 'subscribed' do
         context 'unchanged' do
           let(:model){ double(:model, :subscribed => true,
