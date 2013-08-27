@@ -1,109 +1,72 @@
 require 'spec_helper'
 
 describe Spree::Chimpy::Subscription do
+  let(:model){ double(:model) }
+  let(:subscription){ described_class.new(model) }
 
-  context "mail chimp enabled" do
-    let(:interface)    { mock(:interface) }
-
+  context 'configured' do
     before do
-      Spree::Chimpy::Config.list_name  = 'Members'
       Spree::Chimpy::Config.merge_vars = {'EMAIL' => :email}
-      Spree::Chimpy.stub(list: interface)
+      Spree::Chimpy.stub(:configured? => true)
     end
 
-    context "subscribing users" do
-      let(:user)         { FactoryGirl.build(:user, subscribed: true) }
-      let(:subscription) { Spree::Chimpy::Subscription.new(user) }
-
-      before do
-        Spree::Chimpy::Config.merge_vars = {'EMAIL' => :email, 'SIZE' => :size, 'HEIGHT' => :height}
-
-        def user.size
-          '10'
-        end
-
-        def user.height
-          '20'
+    describe "subscribe" do
+      after(:each){ subscription.subscribe }
+      context 'not subscribed' do
+        let(:model){ double(:model, subscribed: false) }
+        it 'does nothing' do
+          Spree::Chimpy.should_not_receive(:enqueue)
         end
       end
-
-      it "subscribes users" do
-        interface.should_receive(:subscribe).with(user.email, {'SIZE' => '10', 'HEIGHT' => '20'}, customer: true)
-        subscription.subscribe
-      end
-
-    end
-
-    context "subscribing subscribers" do
-      let(:subscriber)   { Spree::Chimpy::Subscriber.new(email: "test@example.com") }
-      let(:subscription) { Spree::Chimpy::Subscription.new(subscriber) }
-
-      it "subscribes subscribers" do
-        interface.should_receive(:subscribe).with(subscriber.email, {}, customer: false)
-        interface.should_not_receive(:segment)
-        subscription.subscribe
-      end
-    end
-
-    context "resubscribe" do
-      let(:user)         { FactoryGirl.create(:user, subscribed: true) }
-      let(:subscription) { mock(:subscription) }
-
-      before do
-        interface.should_receive(:subscribe).once.with(user.email)
-        user.stub(subscription: subscription)
-      end
-
-      context "when update needed" do
-        it "calls resubscribe" do
-          subscription.should_receive(:resubscribe)
-          user.save
-        end
-      end
-
-      context "when update not needed" do
-        it "still calls resubscribe, and does nothing" do
-          subscription.should_receive(:resubscribe)
-          subscription.should_not_receive(:unsubscribe)
-          user.save
+      context 'subscribed' do
+        let(:model){ double(:model, subscribed: true) }
+        it 'should enqueue' do
+          Spree::Chimpy.should_receive(:enqueue).with(:subscribe, model)
         end
       end
     end
 
-    context "subscribing" do
-      let(:subscription) { Spree::Chimpy::Subscription.new(user) }
-
-      before { interface.should_receive(:subscribe).at_least(0) }
-
-      context "subscribed user" do
-        let(:user) { FactoryGirl.create(:user, subscribed: true) }
-        it "unsubscribes" do
-          interface.should_receive(:unsubscribe).with(user.email)
-          subscription.unsubscribe
+    describe "unsubscribe" do
+      after(:each){ subscription.unsubscribe }
+      context 'not subscribed' do
+        let(:model){ double(:model, subscribed: false) }
+        it 'should enqueue' do
+          Spree::Chimpy.should_receive(:enqueue).with(:unsubscribe, model)
         end
       end
-
-      context "non-subscribed user" do
-        let(:user) { FactoryGirl.build(:user, subscribed: false) }
-        it "does nothing" do
-          interface.should_not_receive(:unsubscribe)
-          subscription.unsubscribe
+      context 'subscribed' do
+        let(:model){ double(:model, subscribed: true) }
+        it 'should enqueue' do
+          Spree::Chimpy.should_receive(:enqueue).with(:unsubscribe, model)
         end
       end
+    end
+
+    describe "resubscribe" do
+      pending
     end
   end
 
-  context "mail chimp disabled" do
+  context 'not configured' do
     before do
-      Spree::Chimpy::Config.stub(key: nil)
-
-      user = FactoryGirl.build(:user, subscribed: true)
-      @subscription = Spree::Chimpy::Subscription.new(user)
+      Spree::Chimpy.stub(configured?: false)
+      Spree::Chimpy.should_not_receive(:enqueue)
     end
 
-    specify { @subscription.subscribe }
-    specify { @subscription.unsubscribe }
-    specify { @subscription.resubscribe {} }
+    describe 'subscribe' do
+      it "does nothing" do
+        subscription.subscribe
+      end
+    end
+    describe 'unsubscribe' do
+      it "does nothing" do
+        subscription.unsubscribe
+      end
+    end
+    describe 'resubscribe' do
+      it "does nothing" do
+        subscription.resubscribe
+      end
+    end
   end
-
 end

@@ -7,7 +7,7 @@ module Spree::Chimpy
     end
 
     def subscribe
-      defer(:subscribe)
+      defer(:subscribe) if allowed?
     end
 
     def unsubscribe
@@ -26,9 +26,9 @@ module Spree::Chimpy
       end
     end
 
-  private
+    private
     def defer(event)
-      enqueue(event, @model) if allowed?
+      enqueue(event, @model) if configured?
     end
 
     def allowed?
