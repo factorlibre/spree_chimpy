@@ -13,7 +13,7 @@ module Spree::Chimpy
 
   def enqueue(event, object)
     payload = {class: object.class.name, id: object.id, object: object}
-    ActiveSupport::Notifications.instrument("spree.chimpy.#{event}", payload)
+    handle_event(event, payload)
   end
 
   def log(message)
