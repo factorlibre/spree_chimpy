@@ -27,12 +27,6 @@ module Spree::Chimpy
       end
     end
 
-    initializer 'spree_chimpy.subscribe' do
-      ActiveSupport::Notifications.subscribe /^spree\.chimpy\./ do |name, start, finish, id, payload|
-        Spree::Chimpy.handle_event(name.split('.').last, payload)
-      end
-    end
-
     def self.activate
       if defined?(Spree::StoreController)
         Spree::StoreController.send(:include, Spree::Chimpy::ControllerFilters)
