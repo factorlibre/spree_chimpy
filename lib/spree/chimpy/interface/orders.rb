@@ -52,7 +52,7 @@ module Spree::Chimpy
           total:       order.total.to_f,
           order_date:  order.completed_at.strftime('%Y-%m-%d'),
           shipping:    order.ship_total.to_f,
-          tax:         order.tax_total.to_f,
+          tax:         order.included_tax_total.to_f + order.additional_tax_total.to_f,
           store_name:  Spree::Config.site_name,
           store_id:    Spree::Chimpy::Config.store_id,
           items:       items

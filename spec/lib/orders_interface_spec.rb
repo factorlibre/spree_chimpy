@@ -12,6 +12,9 @@ describe Spree::Chimpy::Interface::Orders do
     # we need to have a saved order in order to have a non-nil order number
     # we need to stub :notify_mail_chimp otherwise sync will be called on the order on update!
     order.stub(:notify_mail_chimp).and_return(true)
+
+    # completed_at isn't set until the record is saved
+    order.stub(:completed_at).and_return(Time.now)
     order.save
   end
 
