@@ -5,9 +5,9 @@ group :assets do
   gem 'sass-rails'
 end
 
-gem 'spree', '~> 2.0.0'
+gem 'spree', github: 'spree/spree', branch: '2-2-stable'
 
 # provides basic authentication functionality for testing parts of your engine
-gem 'spree_auth_devise', github: 'spree/spree_auth_devise', branch: '2-0-stable'
+gem 'spree_auth_devise', github: 'spree/spree_auth_devise', branch: '2-2-stable'
 
 gemspec
