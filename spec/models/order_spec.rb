@@ -10,8 +10,8 @@ describe Spree::Order do
     before do
       Spree::Chimpy::Config.key = nil
 
-      @completed_order     = build(:completed_order_with_totals)
-      @not_completed_order = build(:order)
+      @completed_order     = create(:completed_order_with_totals)
+      @not_completed_order = create(:order)
 
       Spree::Chimpy::Config.key = '1234'
     end
