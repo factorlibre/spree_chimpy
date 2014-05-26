@@ -9,16 +9,6 @@ module SpreeChimpy
         copy_file 'spree_chimpy.rb', 'config/initializers/spree_chimpy.rb'
       end
 
-      def add_javascripts
-        append_file 'vendor/assets/javascripts/spree/frontend/all.js', "//= require store/spree_chimpy\n"
-        append_file 'vendor/assets/javascripts/spree/backend/all.js', "//= require admin/spree_chimpy\n"
-      end
-
-      def add_stylesheets
-        inject_into_file 'vendor/assets/stylesheets/spree/frontend/all.css', " *= require store/spree_chimpy\n", before: /\*\//, verbose: true
-        inject_into_file 'vendor/assets/stylesheets/spree/backend/all.css', " *= require admin/spree_chimpy\n", before: /\*\//, verbose: true
-      end
-
       def add_migrations
         run 'bundle exec rake railties:install:migrations FROM=spree_chimpy'
       end

@@ -19,13 +19,14 @@ feature 'Chimpy Admin', js: true do
     click_button 'Create'
 
     expect(current_path).to eq '/admin/users'
-    expect(page).to have_content 'API ACCESS'
-    expect(page).to have_content 'NO KEY'
+    expect(page).to have_content 'API Access'
+    expect(page).to have_content 'No key'
 
     find_button('Generate API key').click
 
     fill_in_subscription user
 
+    binding.pry
     check 'user_subscribed'
     click_button 'Update'
 
@@ -39,10 +40,11 @@ feature 'Chimpy Admin', js: true do
     fill_in_subscription user
 
     click_button 'Create'
+    binding.pry
 
     current_path.should eq '/admin/users'
-    expect(page).to have_content 'API ACCESS'
-    expect(page).to have_content 'NO KEY'
+    expect(page).to have_content 'API Access'
+    expect(page).to have_content 'No key'
 
     find_button('Generate API key').click
 

@@ -3,7 +3,7 @@ en:
   spree:
     chimpy:
       subscribed_label: Sign me up to the newsletter
-      admin_subscribed_label: Subscribed to newsletter
+      admin_subscribed_label: SUBSCRIBED TO NEWSLETTER
       subscribe_title: Subscribe to our newsletter
       subscribed: Subscribed
       email:
