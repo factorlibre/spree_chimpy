@@ -21,12 +21,6 @@ module Spree::Chimpy
       end
     end
 
-    initializer 'spree_chimpy.double_opt_in' do
-      if Spree::Chimpy::Config.subscribed_by_default && !Spree::Chimpy::Config.double_opt_in
-        Rails.logger.warn("spree_chimpy: You have 'subscribed by default' enabled while 'double opt-in' is disabled. This is not recommended.")
-      end
-    end
-
     def self.activate
       if defined?(Spree::StoreController)
         Spree::StoreController.send(:include, Spree::Chimpy::ControllerFilters)

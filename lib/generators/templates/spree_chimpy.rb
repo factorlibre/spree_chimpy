@@ -8,11 +8,6 @@ Spree::Chimpy.config do |config|
   # name of your list, defaults to "Members"
   # config.list_name = 'peeps'
 
-  # Allow users to be subscribed by default. Defaults to false
-  # If you enable this option, it's strongly advised that your enable
-  # double_opt_in as well. Abusing this may cause Mailchimp to suspend your account.
-  # config.subscribed_by_default = false
-
   # When double-opt is enabled, the user will receive an email
   # asking to confirm their subscription. Defaults to false
   # config.double_opt_in = false
