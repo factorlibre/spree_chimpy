@@ -1,0 +1,14 @@
+---
+es:
+  spree:
+    chimpy:
+      subscribed_label: Suscribeme a la newsletter
+      admin_subscribed_label: Suscrito a la newsletter
+      subscribe_title: Suscribase a nuestra newsletter
+      subscribed: Suscrito
+      email:
+        label: Email
+        placeholder: Introduzca su email
+      subscriber:
+        success: ¡Muchas gracias! te has suscrito correctamente
+        failure: Ha ocurrido un problema al suscribirse
