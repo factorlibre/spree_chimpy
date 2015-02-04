@@ -18,6 +18,7 @@ ENV['RAILS_ENV'] = 'test'
 
 require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 
+require 'minitest/autorun'
 require 'rspec/rails'
 require 'i18n-spec'
 require 'capybara/rspec'

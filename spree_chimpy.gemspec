@@ -17,12 +17,12 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  s.add_dependency 'spree', '~> 2.2.2'
+  s.add_dependency 'spree', '~> 2.4'
   s.add_dependency 'mailchimp', '>= 0.0.9'
 
   s.add_development_dependency 'rspec-rails', '~> 2.14'
   s.add_development_dependency 'capybara', '~> 2.1.0'
-  s.add_development_dependency 'selenium-webdriver', '~> 2.42.0'
+  s.add_development_dependency 'selenium-webdriver', '~> 2.44.0'
   s.add_development_dependency 'factory_girl', '~> 4.2'
   s.add_development_dependency 'shoulda-matchers', '~> 2.2'
   s.add_development_dependency 'sqlite3', '~> 1.3.7'
@@ -36,4 +36,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'launchy'
   s.add_development_dependency 'coveralls'
+  s.add_development_dependency 'minitest'
 end
